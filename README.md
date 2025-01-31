@@ -94,7 +94,7 @@ To ensure the script and API run on startup:
   ```bash
   crontab -e
   ```
-  Add the following lines:
+- Add the following lines:
   ```bash
   @reboot cd /path/to/node-sonos-http-api && npm start &
   @reboot python3 /path/to/your/script.py &
