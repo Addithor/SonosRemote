@@ -13,7 +13,7 @@ This project is a Raspberry Pi-based remote control for a Sonos speaker system. 
    - Press the button to toggle mute/unmute with a fade effect.
 
 3. **Button Sound**:
-   - Play a sound over the Sonos speakers when the button is pressed.
+   - Play a sound over the Sonos speakers when the button is pressed when initiating shutdown.
 
 4. **Shutdown**:
    - Hold the button for 3 seconds to safely shut down the Raspberry Pi.
@@ -26,9 +26,8 @@ This project is a Raspberry Pi-based remote control for a Sonos speaker system. 
 ## Requirements
 
 ### Hardware
-- **Raspberry Pi Zero W** (or equivalent with Wi-Fi support)
+- **Raspberry Pi Zero W**
 - **Rotary Encoder** with push-button functionality
-- Optional: External speaker (if button sound should not overlay Sonos playback)
 
 ### Software
 - **Raspberry Pi OS (Lite recommended)**
@@ -116,11 +115,9 @@ To ensure the script and API run on startup:
 2. **Mute/Unmute**:
    - Press the button to toggle mute/unmute with a fade effect.
 
-3. **Play Button Sound**:
-   - A sound is played on the Sonos speakers when the button is pressed.
-
-4. **Shutdown**:
+3. **Shutdown**:
    - Hold the button for 3 seconds to safely shut down the Raspberry Pi.
+   - Sound effect is played when the device is shutdown.
 
 ---
 
