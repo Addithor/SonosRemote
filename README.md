@@ -22,7 +22,7 @@ This project is a Raspberry Pi-based remote control for a Sonos speaker system. 
    - Automatically detects the Raspberry Pi's local IP address to interact with the Sonos HTTP API.
 
 6. **Sonos HTTP API Server runs on the PI**:
-   - Uses Systemd Service to run the python script and the Sonos HTTP API.
+   - Uses cron service to run the python script and the Sonos HTTP API.
 
 ---
 
@@ -31,55 +31,29 @@ This project is a Raspberry Pi-based remote control for a Sonos speaker system. 
 ### Hardware
 - **Raspberry Pi Zero W**
 - **Rotary Encoder** with push-button functionality
+   - Adafruit I2C Stemma QT Rotary Encoder Breakout with Encoder - STEMMA QT / Qwiic
+- **STEMMA QT / Qwiic breakout** 
+   - SparkFun Qwiic or Stemma QT SHIM for Raspberry Pi / SBC
 
 ### Software
 - **Raspberry Pi OS (Lite recommended)**
 - Python 3
-- Required Python libraries:
-  - `gpiozero`
-  - `requests`
+- requirements.txt for python libraries
+- install.sh for system dependancies
 
 ---
 
 ## Setup
 
 ### 1. Hardware Connection
-- Connect the rotary encoder to the Raspberry Pi's GPIO pins:
-  - `CLK` to GPIO 17
-  - `DT` to GPIO 27
-  - `SW` (button) to GPIO 22
-  - `GND` to a ground pin
-- Ensure the Raspberry Pi is powered and connected to Wi-Fi.
+- Connect the rotary encoder to the Raspberry Pi via the STEMMA QT / Qwiic interface.
 
-### 2. Install Dependencies
-Run the following commands on the Raspberry Pi:
-```bash
-sudo apt update
-sudo apt install python3 python3-pip
-pip3 install gpiozero requests
-```
-
-### 3. Set Up the Sonos HTTP API
-1. Clone the Sonos HTTP API repository:
-   ```bash
-   git clone https://github.com/jishi/node-sonos-http-api.git
-   ```
-2. Navigate to the directory:
-   ```bash
-   cd node-sonos-http-api
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-4. Start the API:
-   ```bash
-   npm start
-   ```
+### 2. Run the installer
+- Run install.sh
+- Make the installer executable if needed: chmod +x ./install.sh
 
 ### 4. Configure the Python Script
-1. Place the `button_press.mp3` sound file in your web server directory (e.g., `/var/www/html/`).
-2. Update the script with the correct file paths and Sonos room name.
+- Update .env.sonos with the appropriate room name, port for the Sonos API and path to the button sound
 
 ---
 
@@ -99,8 +73,7 @@ To ensure the script and API run on startup:
   ```
   Add the following lines:
   ```bash
-  @reboot cd /path/to/node-sonos-http-api && npm start &
-  @reboot python3 /path/to/your/script.py &
+  @reboot /path/to/your/script/startup_sonos.sh >> /path/to/your/script/startup.log 2>&1
   ```
 - Save and reboot:
   ```bash
@@ -119,7 +92,7 @@ To ensure the script and API run on startup:
    - Press the button to toggle mute/unmute with a fade effect.
 
 3. **Play Button Sound**:
-   - A sound is played on the Sonos speakers when the button is pressed.
+   - A sound is played on the Sonos speakers after long press.
 
 4. **Shutdown**:
    - Hold the button for 3 seconds to safely shut down the Raspberry Pi.
@@ -139,6 +112,8 @@ To ensure the script and API run on startup:
     ```bash
     http://<pi-ip>/button_press.mp3
     ```
+  - The button sound file (`button_press.wav` or `.mp3`) should be placed in:
+`/var/www/html/` this is the default public folder for the Apache web server on Raspberry Pi OS.
 
 - **Script Not Running on Startup**:
   - Check `crontab` entries and logs for errors.
